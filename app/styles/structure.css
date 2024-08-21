@@ -1,0 +1,24 @@
+body {
+  width: 390px;
+}
+
+main {
+  width: 100%;
+}
+
+@media (width > 390px) {
+  body {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  main {
+    border: 1px solid rgba(53, 56, 62, 0.05);
+    border-radius: 28px;
+    height: 844px;
+    width: 390px;
+  }
+}
