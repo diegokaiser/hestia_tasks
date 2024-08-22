@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import Apis from '@/app/libs/apis'
@@ -25,9 +25,6 @@ export default function Home() {
   const handleGoogleLogin = async () => {
     setLoading(true)
     try {
-      // ejecutar Apis.user.GoogleLogin
-      // si responde con exito
-      // router.push('/dashboard)
       const res = await Apis.users.GoogleLogin()
       if ( res ) {
         router.push('/dashboard')
