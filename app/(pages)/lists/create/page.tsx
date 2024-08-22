@@ -7,10 +7,17 @@ import Apis from '@/app/libs/apis'
 import { Button, InputText } from "@/app/ui/components/atoms";
 import { LoadingScreen } from "@/app/ui/components/molecules";
 
+interface User {
+  uid: string;
+  displayName?: string;
+  emailVerified?: boolean;
+  photoURL: string
+}
+
 export default function CreatePage() {
   const cookies = new Cookies
   const [loading, setLoading] = useState<boolean>(false)
-  const [thisUser, setThisUser] = useState<object>({})
+  const [thisUser, setThisUser] = useState<User | null >(null)
   const [listName, setListName] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
   const router = useRouter()
@@ -27,9 +34,11 @@ export default function CreatePage() {
       name: listName
     }
     try {
-      const res = await Apis.lists.PostList(thisUser.uid, list)
-      if ( res ) {
-        router.push('/dashboard')
+      if ( thisUser ) {
+        const res = await Apis.lists.PostList(thisUser.uid, list)
+        if ( res ) {
+          router.push('/dashboard')
+        }
       }
     } catch (error) {
       setError(true)

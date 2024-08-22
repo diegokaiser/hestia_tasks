@@ -1,9 +1,13 @@
 'use client'
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Cookies from 'universal-cookie';
 import Apis from "@/app/libs/apis";
 import { LoadingScreen } from "@/app/ui/components/molecules";
+
+interface List {
+  uid: string,
+  name: string
+}
 
 interface Props {
   uid: string
@@ -11,13 +15,20 @@ interface Props {
 
 const Lists = ({uid}: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
-  const [dataLists, setDataLists] = useState<Array<object>>([])
+  const [dataLists, setDataLists] = useState<List[]>([])
 
   useEffect(() => {
     setLoading(true)
     const getLists = async () => {
       try {
         const res = await Apis.lists.GetLists(uid)
+        if ( res && Array.isArray(res) ) {
+          const formattedLists = res.map((item: any) => ({
+            uid: item.id,
+            name: item.name
+          }))
+          setDataLists(formattedLists)
+        }
       } catch (error) {
         console.log(error)
       } finally {
@@ -25,15 +36,15 @@ const Lists = ({uid}: Props) => {
       }
     }
     getLists()
-  }, [])
-  console.log(`dataLists: ${dataLists}`)
+  }, [uid])
+  console.log(dataLists)
 
   return (
     <>
       <div className="hs__lists">
         {dataLists ? (
           <>
-            {dataLists.map(list => {
+            {dataLists.map(list => (
               <div className="hs__lists-item">
                 <Link
                   className="hs__lists-item btn btn-light mb-4 text-base w-full"
@@ -42,7 +53,7 @@ const Lists = ({uid}: Props) => {
                   {list.name}
                 </Link>
               </div>
-            })}
+            ))}
           </>
         ) : (
           <>

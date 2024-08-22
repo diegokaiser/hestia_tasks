@@ -7,10 +7,17 @@ import { Button } from "@/app/ui/components/atoms";
 import { Lists } from "@/app/ui/components/organisms";
 import { LoadingScreen } from "@/app/ui/components/molecules";
 
+interface User {
+  uid: string;
+  displayName?: string;
+  emailVerified?: boolean;
+  photoURL: string
+}
+
 export default function Dashboard() {
   const cookies = new Cookies
   const [loading, setLoading] = useState<boolean>(false)
-  const [thisUser, setThisUser] = useState<object>({})
+  const [thisUser, setThisUser] = useState<User | null >(null)
   const router = useRouter()
 
   const handleCreateList = () => {
@@ -36,7 +43,7 @@ export default function Dashboard() {
           <h3 className="font-semibold mb-4 text-2xl">
             Your lists
           </h3>
-          <Lists uid={thisUser.uid} />
+          {thisUser && <Lists uid={thisUser.uid} />}
         </div>
         <div className="hs__actions">
           <Button
