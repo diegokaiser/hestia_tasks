@@ -7,10 +7,17 @@ import Cookies from 'universal-cookie';
 import { Loading } from '@/app/ui/components/atoms';
 import { LoadingScreen } from "@/app/ui/components/molecules";
 
+interface User {
+  uid: string;
+  displayName?: string;
+  emailVerified?: boolean;
+  photoURL: string
+}
+
 const Nav = () => {
   const cookies = new Cookies
   const [loading, setLoading] = useState<boolean>(false)
-  const [thisUser, setThisUser] = useState<object>({})
+  const [thisUser, setThisUser] = useState<User | null >(null)
   const router = useRouter()
 
   const handleLogout = () => {
@@ -42,24 +49,28 @@ const Nav = () => {
               </>
             ) : (
               <>
-                {thisUser.displayName == null ? (
+                {thisUser && (
                   <>
-                    <p className='ml-3'>
-                      Welcome!
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <Image 
-                      alt={thisUser.photoURL}
-                      src={thisUser.photoURL}
-                      height={35}
-                      width={35}
-                      loading='lazy'
-                    />
-                    <p className='ml-3'>
-                      {thisUser.displayName}
-                    </p>
+                    {thisUser.displayName == null ? (
+                      <>
+                        <p className='ml-3'>
+                          Welcome!
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <Image 
+                          alt={thisUser.photoURL}
+                          src={thisUser.photoURL}
+                          height={35}
+                          width={35}
+                          loading='lazy'
+                        />
+                        <p className='ml-3'>
+                          {thisUser.displayName}
+                        </p>
+                      </>
+                    )}
                   </>
                 )}
               </>

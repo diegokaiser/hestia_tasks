@@ -85,7 +85,7 @@ input {
   &.btn-light {
     background-color: #EEEEEE;
     border: 2px solid #E0E0E0;
-    color: #BDBDBD;
+    color: #757575;
   }
 
   &.btn-dark {
@@ -99,4 +99,15 @@ input {
     color: #BDBDBD;
     cursor: not-allowed;
   }
+}
+
+.task {
+  align-items: center;
+  border-radius: 22px;
+  color: white;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 500;
+  justify-content: center;
+  padding: .562rem 1rem;
 }

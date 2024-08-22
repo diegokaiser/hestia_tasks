@@ -2,17 +2,17 @@ const tasks = {
   GetTask: async ( uid: string ) => {
     return uid
   },
-  GetTasks: async () => {
+  GetTasks: async ( userUid: string ) => {
     const users: object[] = []
     return users
   },
-  PostTask: async () => {
+  PostTask: async ( userUid: string ) => {
 
   },
-  PatchTask: async () => {
+  PatchTask: async ( uid: string ) => {
     
   },
-  DeleteTask: async () => {
+  DeleteTask: async ( uid: string ) => {
     
   }
 }
