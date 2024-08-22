@@ -1,0 +1,102 @@
+input {
+  border: 2px solid #BDBDBD;
+  border-radius: 8px;
+  padding: .562rem 1rem !important;
+}
+
+.loading {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 60px;
+}
+
+.loadingScreen {
+  align-items: center;
+  background-color: rgba(0, 0, 0, .25);
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 99;
+  .spinner_ngNb {
+    fill: #424242;
+  }
+}
+
+.spinner_ngNb {
+  animation: spinner_ZRWK 1.2s cubic-bezier(0.52, .6, .25, .99) infinite;
+  fill: #BDBDBD;
+}
+
+.loaderIco {
+  transform: scale(2.5);
+}
+
+.spinner_6TBP {
+  animation-delay: .6s
+}
+
+@keyframes spinner_ZRWK {
+  0% {
+    transform: translate(12px, 12px) scale(0);
+    opacity: 1
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0
+  }
+}
+
+.btn {
+  align-items: center;
+  border-radius: 8px;
+  color: white;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 500;
+  justify-content: center;
+  padding: .562rem 1rem;
+
+  &.btn-primary {
+    background-color: #2196F3;
+    border: 2px solid #2196F3;
+  }
+
+  &.btn-secondary {
+    background-color: #39465F;
+    border: 2px solid #39465F;
+  }
+
+  &.btn-danger {
+    background-color: #F44336;
+    border: 2px solid #F44336;
+  }
+
+  &.btn-success {
+    background-color: #8BC34A;
+    border: 2px solid #8BC34A;
+  }
+
+  &.btn-light {
+    background-color: #EEEEEE;
+    border: 2px solid #E0E0E0;
+    color: #BDBDBD;
+  }
+
+  &.btn-dark {
+    background-color: #616161;
+    border: 2px solid #424242;
+  }
+
+  &:disabled {
+    background-color: transparent;
+    border: 2px solid #BDBDBD;
+    color: #BDBDBD;
+    cursor: not-allowed;
+  }
+}

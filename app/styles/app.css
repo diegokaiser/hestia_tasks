@@ -1,0 +1,46 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  .loginform__separator {
+    position: relative;
+    &::after,
+    &::before {
+      background-color: #A39797;
+      content: "";
+      display: block;
+      height: 1px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28%;
+    }
+    &::after {
+      right: 28px;
+    }
+    &::before {
+      left: 28px;
+    }
+  }
+}
+
+.nav {
+  background-color: #F5F5F5;
+  border-top: 1px solid #CFD8DC;
+  bottom: 0;
+  padding: 21px 0;
+  position: fixed;
+  width: 100%;
+  .nav__avatar {
+    img {
+      border-radius: 35px;
+    }
+  }
+}
+
+@media (width > 390px) {
+  .login {
+    height: 100%;
+  }
+}
