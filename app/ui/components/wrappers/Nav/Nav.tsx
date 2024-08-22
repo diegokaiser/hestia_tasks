@@ -50,6 +50,16 @@ const Nav = () => {
                   </>
                 ) : (
                   <>
+                    <Image 
+                      alt={thisUser.photoURL}
+                      src={thisUser.photoURL}
+                      height={35}
+                      width={35}
+                      loading='lazy'
+                    />
+                    <p className='ml-3'>
+                      {thisUser.displayName}
+                    </p>
                   </>
                 )}
               </>

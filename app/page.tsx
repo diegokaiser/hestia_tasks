@@ -22,6 +22,21 @@ export default function Home() {
     setPassword(e.target.value)
   }
 
+  const handleGoogleLogin = async () => {
+    setLoading(true)
+    try {
+      // ejecutar Apis.user.GoogleLogin
+      // si responde con exito
+      // router.push('/dashboard)
+      const res = await Apis.users.GoogleLogin()
+      if ( res ) {
+        router.push('/dashboard')
+      }
+    } catch (error) {
+      setError(true)
+    }
+  }
+
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
@@ -81,6 +96,7 @@ export default function Home() {
             inactive={false}
             text="Login with Google"
             type="button"
+            onClick={handleGoogleLogin}
           />
         </div>
         <div className="font-light text-center text-sm">

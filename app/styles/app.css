@@ -32,6 +32,11 @@
   padding: 21px 0;
   position: fixed;
   width: 100%;
+  .nav__avatar {
+    img {
+      border-radius: 35px;
+    }
+  }
 }
 
 @media (width > 390px) {
