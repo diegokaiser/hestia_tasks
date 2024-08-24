@@ -108,59 +108,82 @@ select {
 }
 
 .task {
-  background-color: #F5F5F5;
-  border-radius: 22px;
-  color: #35383E;
-  font-size: 16px;
-  font-weight: 500;
-  height: 65px;
-  padding: .562rem 1rem;
-
-  .task__completed {
-    border-radius: 11px;
-    height: 35px;
-    width: 35px;
-    svg {
-      height: 21px;
-      width: 21px;
-    }
-  }
-
-  &.completed-false {
-    background: #E8E8E8;
-    .task__completed {
-      background: #D5D6D6;
-      svg {
-        path {
-          fill: #ADAFB0;
-        }
-      }
-    }
-  }
-
-  &.completed-true {
-    background: #D8EDDD;
-    color: #176B2A;
-    .task__completed {
-      background: #2BD350;
-      svg {
-        path {
-          fill: #D8EDDD;
-        }
-      }
-    }
-  }
-
-  .task__priority {
-    background: #FD3E3E;
-    border-radius: 11px;
+  .task__edit,
+  .task__delete {
+    border-radius: 22px;
     color: white;
-    height: 35px;
-    right: 16px;
-    width: 35px;
+    height: 65px;
+    max-width: 140px;
+    min-width: 65px;
+    top: 0;
     svg {
       height: 21px;
       width: 21px;
+    }
+  }
+
+  .task__edit {
+    background: #2B71FC;
+  }
+
+  .task__delete {
+    background: #FD3E3E;
+  }
+
+  .task__content {
+    background-color: #F5F5F5;
+    border-radius: 22px;
+    color: #35383E;
+    font-size: 16px;
+    font-weight: 500;
+    height: 65px;
+    padding: .562rem 1rem;
+    .task__completed {
+      border-radius: 11px;
+      height: 35px;
+      width: 35px;
+      svg {
+        height: 21px;
+        width: 21px;
+      }
+    }
+  
+    &.completed-false {
+      background: #E8E8E8;
+      .task__completed {
+        background: #D5D6D6;
+        svg {
+          path {
+            fill: #ADAFB0;
+          }
+        }
+      }
+    }
+  
+    &.completed-true {
+      background: #D8EDDD;
+      color: #176B2A;
+      .task__completed {
+        background: #2BD350;
+        svg {
+          path {
+            fill: #D8EDDD;
+          }
+        }
+      }
+    }
+  
+    .task__priority {
+      background: #FD3E3E;
+      border-radius: 11px;
+      color: white;
+      height: 35px;
+      right: 16px;
+      width: 35px;
+      svg {
+        height: 21px;
+        width: 21px;
+      }
     }
   }
 }
