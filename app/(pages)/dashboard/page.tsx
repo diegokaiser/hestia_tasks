@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
 import Cookies from 'universal-cookie';
 import { Button } from "@/app/ui/components/atoms";
-import { Lists } from "@/app/ui/components/organisms";
 import { LoadingScreen } from "@/app/ui/components/molecules";
+import { Lists } from "@/app/ui/components/organisms";
 
 interface User {
   uid: string;
@@ -56,6 +56,7 @@ export default function Dashboard() {
           />
         </div>
       </div>
+      {loading && ( <LoadingScreen /> )}
     </>
   )
 }

@@ -78,7 +78,7 @@ const Nav = () => {
           </div>
           <div className='nav__actions'>
             <button
-              className='btn btn-danger uppercase'
+              className='btn btn-danger font-semibold uppercase'
               onClick={handleLogout}
             >
               Logout

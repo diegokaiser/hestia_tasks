@@ -1,4 +1,5 @@
 'use client'
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Apis from "@/app/libs/apis";
@@ -37,7 +38,6 @@ const Lists = ({uid}: Props) => {
     }
     getLists()
   }, [uid])
-  console.log(dataLists)
 
   return (
     <>
@@ -45,7 +45,7 @@ const Lists = ({uid}: Props) => {
         {dataLists ? (
           <>
             {dataLists.map(list => (
-              <div className="hs__lists-item">
+              <div key={list.uid} className="hs__lists-item">
                 <Link
                   className="hs__lists-item btn btn-light mb-4 text-base w-full"
                   href={`/lists/${list.uid}`}

@@ -1,7 +1,7 @@
 'use client'
 
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import Cookies from 'universal-cookie';
 import Apis from '@/app/libs/apis'
 import { Button, InputText } from "@/app/ui/components/atoms";
@@ -15,33 +15,43 @@ interface User {
 }
 
 export default function CreatePage() {
+  const params = useParams()
+  const listUid = Array.isArray(params.listUid) ? params.listUid[0] : params.listUid
   const cookies = new Cookies
   const [loading, setLoading] = useState<boolean>(false)
   const [thisUser, setThisUser] = useState<User | null >(null)
-  const [listName, setListName] = useState<string>('')
+  const [taskName, setTaskName] = useState<string>('')
+  const [priority, setPriority] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
   const router = useRouter()
 
-  const handleChangeListName = (e: ChangeEvent<HTMLInputElement>) => {
-    setListName(e.target.value)
+  const handleChangeTaskName = (e: ChangeEvent<HTMLInputElement>) => {
+    setTaskName(e.target.value)
   }
 
-  const handleCreateList = async (e: FormEvent<HTMLFormElement>) => {
+  const handleChangePriority = (e: ChangeEvent<HTMLSelectElement>) => {
+    setPriority(e.target.value)
+  }
+
+  const handleCreateTask = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
 
-    const list = {
-      name: listName
+    const task = {
+      name: taskName,
+      priority: priority ? priority : 'low',
+      completed: false
     }
     try {
       if ( thisUser ) {
-        const res = await Apis.lists.PostList(thisUser.uid, list)
-        if ( res ) {
-          router.push('/dashboard')
-        }
+        await Apis.tasks.PostTask(thisUser.uid, listUid, task)
+        router.back()
       }
     } catch (error) {
+      console.log(error)
       setError(true)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -59,31 +69,38 @@ export default function CreatePage() {
 
   return (
     <>
-      <div className="my-0 mx-auto py-4 w-11/12">
+      <div className="my-0 mx-auto pt-4 w-11/12">
         <form
           className="hs__forms mb-4"
-          onSubmit={handleCreateList}
+          onSubmit={handleCreateTask}
         >
           <h3 className="font-semibold mb-4 text-2xl">
-            Crear lista
+            Create task
           </h3>
           <div className="hs__forms-item mb-4">
             <InputText
-              className="w-full"
-              placeholder="List name..."
-              type="text"
-              onChange={handleChangeListName}
+              className='w-full'
+              placeholder='Task name...'
+              type='text'
+              onChange={handleChangeTaskName}
             />
           </div>
           <div className="hs__forms-item mb-4">
-
+            <select
+              className='w-full'
+              onChange={handleChangePriority}
+            >
+              <option value="0">Seleccionar prioridad</option>
+              <option value="low">Low</option>
+              <option value="high">High</option>
+            </select>
           </div>
           <div className="hs__forms-actions">
             <Button
-              className="flex items-center justify-center w-full"
+              className='flex items-center justify-center w-full'
               color="success"
-              inactive={!listName}
-              text="Create list"
+              inactive={!taskName}
+              text="Create task"
               type="submit"
             />
           </div>
