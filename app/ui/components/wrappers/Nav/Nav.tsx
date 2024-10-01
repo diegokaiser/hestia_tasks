@@ -1,11 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Cookies from 'universal-cookie';
-import { Loading } from '@/app/ui/components/atoms';
-import { LoadingScreen } from "@/app/ui/components/molecules";
+import SkeletonNav from '@/app/ui/skeletons/wrappers/Nav';
 
 interface User {
   uid: string;
@@ -14,63 +13,63 @@ interface User {
   photoURL: string
 }
 
-const Nav = () => {
+const PreNav = () => {
   const cookies = new Cookies
-  const [loading, setLoading] = useState<boolean>(false)
   const [thisUser, setThisUser] = useState<User | null >(null)
+  const [error, setError] = useState<boolean>(true)
   const router = useRouter()
-
+  
   const handleLogout = () => {
-    setLoading(true)
     cookies.set('hestia', '', { path: '/' })
     router.push('/')
   }
-
+  
   useEffect(() => {
-    setLoading(true)
     const getUser = () => {
       const user = cookies.get('hestia')
       if ( user ) {
+        setError(false)
         setThisUser(user)
+      } else {
+        setError(false)
       }
-      setLoading(false)
     }
     getUser()
   }, [])
 
+  if ( error ) {
+    return <SkeletonNav />
+  }
+
+  if ( !thisUser ) {
+    return null
+  }
+  
   return (
     <>
       <nav className='nav'>
         <div className='flex items-center justify-between mx-auto my-0 w-11/12'>
           <div className='nav__avatar flex items-center'>
-            {loading ? (
+            {thisUser && (
               <>
-                <Loading />
-              </>
-            ) : (
-              <>
-                {thisUser && (
+                {thisUser.displayName == null ? (
                   <>
-                    {thisUser.displayName == null ? (
-                      <>
-                        <p className='ml-3'>
-                          Welcome!
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <Image 
-                          alt={thisUser.photoURL}
-                          src={thisUser.photoURL}
-                          height={35}
-                          width={35}
-                          loading='lazy'
-                        />
-                        <p className='ml-3'>
-                          {thisUser.displayName}
-                        </p>
-                      </>
-                    )}
+                    <p className='ml-3'>
+                      Welcome!
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <Image 
+                      alt={thisUser.photoURL}
+                      src={thisUser.photoURL}
+                      height={35}
+                      width={35}
+                      loading='lazy'
+                    />
+                    <p className='ml-3'>
+                      {thisUser.displayName}
+                    </p>
                   </>
                 )}
               </>
@@ -86,8 +85,15 @@ const Nav = () => {
           </div>
         </div>
       </nav>
-      {loading && ( <LoadingScreen /> )}
     </>
+  )
+}
+
+const Nav = () => {
+  return (
+    <Suspense>
+      <PreNav />
+    </Suspense>
   )
 }
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Cookies from 'universal-cookie';
 import { Button } from '@/app/ui/components/atoms';
-import { LoadingScreen } from "@/app/ui/components/molecules";
+import { ListTitle, LoadingScreen } from "@/app/ui/components/molecules";
 import { Tasks } from '@/app/ui/components/organisms';
 
 interface User {
@@ -28,24 +28,26 @@ export default function List() {
 
   useEffect(() => {
     setLoading(true)
-    const getUser = () => {
+    const getData = () => {
       const user = cookies.get('hestia')
       if ( user ) {
         setThisUser(user)
       }
-      setLoading(false)
+      setLoading(false) 
     }
-    getUser()
+    getData()
   }, [])
 
   return (
     <>
       <div className="my-0 mx-auto py-4 w-11/12">
         <div className="hs__content mb-4">  
-          <h3 className="font-semibold mb-4 text-2xl">
-            List name
-          </h3>
-          {thisUser && <Tasks userUid={thisUser.uid} listUid={uid} />}
+          {thisUser && (
+            <>
+              <ListTitle userUid={thisUser.uid} listUid={uid} />
+              <Tasks userUid={thisUser.uid} listUid={uid} />
+            </>
+          )}
         </div>
         <div className="hs__actions">
           <Button

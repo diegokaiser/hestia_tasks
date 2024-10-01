@@ -1,0 +1,56 @@
+.skeleton {
+  .skeleton__element {
+    background: #eee;
+    background: linear-gradient(110deg, #eeeeee 7%, #f5f5f5 14%, #ececec 35%);
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+  }
+  h3 {
+    border-radius: 11px;
+    height: 35px;
+  }
+  .skeleton__nav {
+    height: 42px;
+    .skeleton__avatar-img {
+      background: #D5D6D6;
+      border-radius: 35px;
+      height: 35px;
+      width: 35px;
+    }
+    .skeleton__avatar-user {
+      background: #D5D6D6;
+      border-radius: 35px;
+      height: 35px;
+      min-width: 140px;
+    }
+    .skeleton__nav-actions {
+      background: #D5D6D6;
+      border-radius: 11px;
+      height: 42px;
+      width: 94px;
+    }
+  }
+  .skeleton__task {
+    border-radius: 22px;
+    height: 65px;
+    padding: .562rem 1rem;
+    position: relative;
+    .skeleton__task-status {
+      background: #D5D6D6;
+      border-radius: 11px;
+      height: 35px;
+      width: 35px;
+    }
+    .skeleton__task-text {
+      background: #D5D6D6;
+      border-radius: 11px;
+      height: 35px;
+    }
+  }
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}

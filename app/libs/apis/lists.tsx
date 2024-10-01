@@ -7,7 +7,8 @@ import {
   orderBy,
   serverTimestamp,
   query,
-  updateDoc
+  updateDoc,
+  where
 } from "firebase/firestore"
 import { db } from '@/app/libs/utils/firebase'
 
@@ -16,10 +17,13 @@ const lists = {
     try {
       const listDocRef = doc(db, 'data', userUid, 'lists', listUid)
       const listDoc = await getDoc(listDocRef)
+
       if ( !listDoc.exists() ) {
         return null
       }
-      return listDoc.data()
+
+      const { name } = listDoc.data()
+      return name
     } catch (error) {
       console.info(`GetList: Error al obtener la lista ${listUid} del usuario ${userUid}:`)
       console.error(error)

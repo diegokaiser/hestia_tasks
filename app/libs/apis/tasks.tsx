@@ -13,16 +13,16 @@ import {
 import { db } from '@/app/libs/utils/firebase'
 
 const tasks = {
-  GetTask: async ( userUid: string, listUid: string, taskUid: string, callback: (data: object | null) => void ) => {
+  GetTask: async ( userUid: string, listUid: string, taskUid: string ) => {
     try {
-      const taskDocRef = doc(db, 'data', userUid, 'lists', listUid, 'tasks', taskUid)
-      onSnapshot(taskDocRef, (docSnapshot) => {
-        if ( docSnapshot.exists() ) {
-          callback(docSnapshot.data())
-        } else {
-          callback(null)
-        }
-      })
+      const taskRef = doc(db, 'data', userUid, 'lists', listUid, 'tasks', taskUid)
+      const taskDoc = await getDoc(taskRef)
+
+      if ( taskDoc.exists() ) {
+        return taskDoc.data()
+      } else {
+        return null
+      }
     } catch (error) {
       console.info(`GetTask: Error al obtener la tarea ${taskUid} de la lista ${listUid} del usuario ${userUid}:`)
       console.error(error)

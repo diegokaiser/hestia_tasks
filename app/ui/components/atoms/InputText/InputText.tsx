@@ -2,10 +2,11 @@ interface Props {
   className?: string,
   placeholder?: string,
   type: string,
-  onChange: any
+  onChange: any,
+  value?: string
 }
 
-const InputText = ({className, placeholder, type, onChange}: Props) => {
+const InputText = ({className, placeholder, type, onChange, value}: Props) => {
   return (
     <>
       <input
@@ -13,6 +14,7 @@ const InputText = ({className, placeholder, type, onChange}: Props) => {
         placeholder={placeholder}
         type={type}
         onChange={onChange}
+        value={value}
       />
     </>
   )

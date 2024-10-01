@@ -90,7 +90,7 @@ export default function CreatePage() {
               className='w-full'
               onChange={handleChangePriority}
             >
-              <option value="0">Seleccionar prioridad</option>
+              <option value="0">Select priority</option>
               <option value="low">Low</option>
               <option value="high">High</option>
             </select>

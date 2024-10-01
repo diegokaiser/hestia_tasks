@@ -1,11 +1,10 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useRouter } from 'next/navigation';
 import { FaCheck, FaPencilAlt, FaRegTrashAlt, FaTimes } from "react-icons/fa";
-import { FaExclamation } from "react-icons/fa6";
 import Apis from "@/app/libs/apis";
-import { LoadingScreen } from "@/app/ui/components/molecules";
+import SkeletonTasks from "@/app/ui/skeletons/organisms/Tasks";
 
 interface Task {
   uid: string,
@@ -20,26 +19,23 @@ interface Props {
   listUid: string
 }
 
-const Tasks = ({userUid, listUid}: Props) => {
-  const [loading, setLoading] = useState<boolean>(false)
+const Task = ({userUid, listUid}: Props) => {
   const [dataTasks, setDataTasks] = useState<Task[]>([])
+  const [error, setError] = useState<boolean>(true)
   const router = useRouter()
-
+  
   const handleDeleteTask = async (userUid: string, listUid: string, taskUid: string) => {
-    setLoading(true)
     try {
       await Apis.tasks.DeleteTask(userUid, listUid, taskUid)
     } catch (error) {
       console.log(error)
-    } finally {
-      setLoading(false)
     }
   }
-
+  
   const gotoEdit = (taskUid: string) => {
-    router.push(`/tasks/${taskUid}`)
+    router.push(`/tasks/${listUid}/${taskUid}`)
   }
-
+  
   const handleUpdateTask = async (taskUid: string, currentCompleted: boolean) => {
     try {
       const newCompleted = !currentCompleted
@@ -48,9 +44,8 @@ const Tasks = ({userUid, listUid}: Props) => {
       console.log(error)
     }
   }
-
+  
   useEffect(() => {
-    setLoading(true)
     const getTasks = async () => {
       try {
         await Apis.tasks.GetTasks(userUid, listUid, (tasks) => {
@@ -61,34 +56,42 @@ const Tasks = ({userUid, listUid}: Props) => {
             completed: item.completed,
             priority: item.priority
           }))
+          setError(false)
           setDataTasks(formattedTasks)
         })
       } catch (error) {
         console.log(error)
-      } finally {
-        setLoading(false)
+        setError(true)
       }
     }
     getTasks()
   }, [userUid, listUid])
 
+  if ( error ) {
+    return <SkeletonTasks />
+  }
+
+  if ( !dataTasks ) {
+    return null
+  }
+  
   return (
     <>
-      <div className="hs__tasks flex flex-col gap-3 overflow-hidden">
+      <div className="hs__tasks flex flex-col gap-4">
         {dataTasks.length > 0 ? (
           <>
             {dataTasks.map(task => (
               <div 
                 key={task.uid}
-                className={`task overflow-x-auto scroll-smooth relative scrollbar-hide`}
-                onClick={() => handleUpdateTask(task.uid, task.completed)}
+                className={`task relative completed-${task.completed} ${task.priority == 'high' ? 'priority' : ''}`}
               >
-                <div className={`task__edit absolute cursor-pointer flex flex-col gap-1 items-center justify-center`} style={{ right: '-81px' }}>
-                  <FaPencilAlt />
-                  <p className="text-xs">Edit</p>
-                </div>
-                <div className={`task__content completed-${task.completed} cursor-pointer flex gap-3 items-center justify-start relative`}>
-                  <div className={`task__completed flex items-center justify-center`}>
+                <div 
+                  className={`task__content cursor-pointer items-center grid grid-cols-6 gap-3 relative`}
+                >
+                  <div 
+                    className={`task__completed flex items-center justify-center`}
+                    onClick={() => handleUpdateTask(task.uid, task.completed)}
+                  >
                     {task.completed ? (
                       <>
                         <FaCheck />
@@ -99,18 +102,25 @@ const Tasks = ({userUid, listUid}: Props) => {
                       </>
                     )}
                   </div>
-                  <div className="font-semibold">
+                  <div className={`font-semibold ${task.completed ? 'col-span-5' : 'col-span-3'} leading-tight`}>
                     {task.name}
                   </div>
-                  {task.priority == 'high' && (
-                    <div className="task__priority absolute flex items-center justify-center">
-                      <FaExclamation />
-                    </div>
+                  {!task.completed && ( 
+                    <>
+                      <div 
+                        className={`task__edit col-start-5 cursor-pointer flex flex-col gap-1 items-center justify-center`}
+                        onClick={() => gotoEdit(task.uid)}
+                      >
+                        <FaPencilAlt />
+                      </div>
+                      <div 
+                        className={`task__delete col-start-6 cursor-pointer flex flex-col gap-1 items-center justify-center `}
+                        onClick={() => handleDeleteTask(userUid, listUid, task.uid)}
+                      >
+                        <FaRegTrashAlt />
+                      </div>
+                    </>
                   )}
-                </div>
-                <div className={`task__delete absolute cursor-pointer flex flex-col gap-1 items-center justify-center `} style={{ right: '-154px' }}>
-                  <FaRegTrashAlt />
-                  <p className="text-xs">Delete</p>
                 </div>
               </div>
             ))}
@@ -126,8 +136,15 @@ const Tasks = ({userUid, listUid}: Props) => {
           </>
         )}
       </div>
-      {loading && ( <LoadingScreen /> )}
     </>
+  )
+}
+
+const Tasks = ({userUid, listUid}: Props) => {
+  return (
+    <Suspense fallback={<SkeletonTasks />}>
+      <Task userUid={userUid} listUid={listUid} />
+    </Suspense>
   )
 }
 

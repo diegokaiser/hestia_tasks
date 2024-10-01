@@ -108,17 +108,18 @@ select {
 }
 
 .task {
+  border: 2px solid rgba(53, 56, 62, .5);
+  border-radius: 22px;
   .task__edit,
   .task__delete {
-    border-radius: 22px;
+    border-radius: 11px;
     color: white;
-    height: 65px;
-    max-width: 140px;
-    min-width: 65px;
+    height: 35px;
+    width: 35px;
     top: 0;
     svg {
-      height: 21px;
-      width: 21px;
+      height: 18px;
+      width: 18px;
     }
   }
 
@@ -131,8 +132,6 @@ select {
   }
 
   .task__content {
-    background-color: #F5F5F5;
-    border-radius: 22px;
     color: #35383E;
     font-size: 16px;
     font-weight: 500;
@@ -141,48 +140,65 @@ select {
     .task__completed {
       border-radius: 11px;
       height: 35px;
+      position: relative;
       width: 35px;
+      z-index: 2;
       svg {
         height: 21px;
         width: 21px;
       }
     }
   
-    &.completed-false {
-      background: #E8E8E8;
-      .task__completed {
-        background: #D5D6D6;
-        svg {
-          path {
-            fill: #ADAFB0;
-          }
+  }
+
+  &.completed-false {
+    background: #E8E8E8; 
+    .task__completed {
+      background: #D5D6D6;
+      svg {
+        path {
+          fill: #ADAFB0;
         }
       }
     }
-  
-    &.completed-true {
-      background: #D8EDDD;
-      color: #176B2A;
-      .task__completed {
-        background: #2BD350;
-        svg {
-          path {
-            fill: #D8EDDD;
-          }
+  }
+
+  &.completed-true {
+    background: #D8EDDD;
+    border: 2px solid rgba(23, 107, 42, .5);
+    color: #176B2A;
+    .task__completed {
+      background: #2BD350;
+      svg {
+        path {
+          fill: #D8EDDD;
         }
       }
     }
-  
-    .task__priority {
+  }
+
+  &.priority {
+    border: 2px solid rgba(253, 62, 62, .5);
+    &::after {
+      align-items: center;
       background: #FD3E3E;
-      border-radius: 11px;
+      border-radius: 14px;
       color: white;
-      height: 35px;
-      right: 16px;
-      width: 35px;
-      svg {
-        height: 21px;
-        width: 21px;
+      content: "!";
+      display: flex;
+      font-weight: bold;
+      height: 21px;
+      justify-content: center;
+      left: -7px;
+      position: absolute;
+      top: -3px;
+      width: 21px;
+      z-index: 2;
+    }
+    &.completed-true {
+      border: 2px solid rgba(23, 107, 42, .5);
+      &::after {
+        display: none;
       }
     }
   }
